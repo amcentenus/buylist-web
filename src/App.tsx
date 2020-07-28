@@ -1,12 +1,11 @@
 import React from 'react';
 
 import './App.css';
+import Login from './pages/Login';
 
 const App: React.FC = () => {
   return (
-    <div>
-      <h1>Buy List</h1>
-    </div>
+    <Login />
   );
 }
 
