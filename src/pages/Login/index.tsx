@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import validate from '../../services/validation';
+
 import { Container, Content, Logos, Form, FormInput, FormButton } from './styles';
 import AppLogo from '../../assets/buylist_logo.png';
 import CILogo from '../../assets/CI_logo.png';
@@ -10,7 +12,8 @@ const Login: React.FC = () => {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log(login, password);
+    validate.existOrError(login, 'Login ou E-mail não informado!');
+    validate.existOrError(password, 'Senha não informada!');
   }
 
   return (
