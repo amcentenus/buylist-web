@@ -1,4 +1,4 @@
-import { toast, Zoom } from 'react-toastify';
+import { toastError } from './Toast';
 
 function _exists(value: any): boolean {
   if (!value) return false;
@@ -12,11 +12,7 @@ function existOrError(value: any, msg: string): boolean {
     if (!_exists(value)) throw msg;
     return true;
   } catch (msg) {
-    toast.error(msg, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000,
-      transition: Zoom
-    })
+    toastError(msg);
     return false;
   }
 }
@@ -26,25 +22,17 @@ function notExistOrError(value: any, msg: string): boolean {
     if (_exists(value)) throw msg;
     return true;
   } catch (msg) {
-    toast.error(msg, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000,
-      transition: Zoom
-    })
+    toastError(msg);
     return false;
   }
 }
 
-function equalOrError(valueA: any, valueB: any): boolean {
+function equalOrError(valueA: any, valueB: any, msg: string): boolean {
   try {
-    if (valueA !== valueB) throw MSGesture;
+    if (valueA !== valueB) throw msg;
     return true;
   } catch (msg) {
-    toast.error(msg, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000,
-      transition: Zoom
-    })
+    toastError(msg);
     return false;
   }
 }
