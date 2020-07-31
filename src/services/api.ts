@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import axios from 'axios';
 import { toastError } from './Toast';
 
@@ -7,9 +8,16 @@ const api = axios.create({
 
 api.interceptors.response.use((response) => {
   return response;
+
 }, (error) => {
-  toastError(error.response.data.message);
-  console.log(error.response);
+  const { message } = error.response.data;
+  if (message) {
+    toastError(error.response.data.message);
+  } else {
+    error.response.data.error.errors.map((err: { message: string; }) => {
+      toastError(err.message);
+    })
+  }
   return Promise.reject(error);
 });
 

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex: 1;
   background: #555E7B;
   height: 100vh;
@@ -71,4 +71,23 @@ export const FormButton = styled.button`
   &:hover{
     opacity: 0.7;
   }
+`;
+export const SignUP = styled.div`
+  width: 400px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+
+  a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    transition: opacity 0.5s;
+    
+    :hover {
+      opacity: 0.7;
+    }
+  }
+
 `;

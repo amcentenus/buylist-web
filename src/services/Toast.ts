@@ -1,4 +1,4 @@
-import { toast, Zoom } from 'react-toastify';
+import { toast, Zoom, Slide } from 'react-toastify';
 
 function toastError(msg: string): void {
   toast.error(msg, {
@@ -8,4 +8,12 @@ function toastError(msg: string): void {
   })
 }
 
-export { toastError }
+function toastMessage(msg: string): void {
+  toast.success(msg, {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: 5000,
+    transition: Slide
+  })
+}
+
+export { toastError, toastMessage }

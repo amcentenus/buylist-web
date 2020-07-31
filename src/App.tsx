@@ -3,15 +3,16 @@ import { ToastContainer } from 'react-toastify';
 
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import Login from './pages/Login';
+import Routes from './routes';
 
 const App: React.FC = () => {
   return (
-    <>
-      <Login />
+    <Router>
+      <Routes />
       <ToastContainer />
-    </>
+    </Router>
   );
 }
 

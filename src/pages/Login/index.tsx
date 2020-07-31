@@ -1,9 +1,14 @@
 import React, { useState, useRef } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-import validate from '../../services/validation';
+import Validate from '../../services/validation';
 import Api from '../../services/api';
+import { setUserToken } from '../../services/localStorage';
 
-import { Container, Content, Logos, Form, FormInput, FormButton } from './styles';
+import {
+  Container, Content, Logos, Form, FormInput, FormButton, SignUP
+} from './styles';
+
 import AppLogo from '../../assets/buylist_logo.png';
 import CILogo from '../../assets/CI_logo.png';
 
@@ -12,20 +17,25 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const history = useHistory();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const validate = new Validate();
     validate.existOrError(login, 'Login ou E-mail não informado!');
     validate.existOrError(password, 'Senha não informada!');
-    try {
-      const response = await Api.post('/sessions', {
-        UserName: login, Password: password
-      });
-      console.log(response.data.Token);
-    } catch (err) {
-      loginRef.current?.focus();
-      loginRef.current?.select();
-      return;
+    if (validate.valid) {
+      try {
+        const response = await Api.post('/sessions', {
+          UserName: login, Password: password
+        });
+        setUserToken(response.data.Token);
+        history.push('/home');
+      } catch (err) {
+        loginRef.current?.focus();
+        loginRef.current?.select();
+        return;
+      }
     }
   }
 
@@ -48,6 +58,9 @@ const Login: React.FC = () => {
           <FormButton type="submit">Entrar</FormButton>
         </Form>
       </Content>
+      <SignUP>
+        <Link to='/logon'>Não tenho conta</Link>
+      </SignUP>
     </Container>
   );
 };
