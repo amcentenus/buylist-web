@@ -6,7 +6,8 @@ import Api from '../../services/api';
 import { toastMessage } from '../../services/Toast';
 
 import {
-  Container, Content, Logos, Form, FormInput, FormButton, SignIN
+  Container, Content, Logos, Form, FormInput,
+  FormButtons, FormButton, SignIN
 } from './styles';
 
 import AppLogo from '../../assets/buylist_logo.png';
@@ -30,11 +31,11 @@ const Logon: React.FC = () => {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const validate = new Validate();
-    validate.existOrError(login, 'Login não informado!');
-    validate.existOrError(email, 'E-mail não informado!');
-    validate.existOrError(password, 'Senha não informada!');
-    validate.existOrError(confirmPassword, 'Confirmação de senha não informada!');
-    validate.equalOrError(password, confirmPassword, 'Senhas informadas não são iguais!')
+    validate.exist(login, 'Login não informado!');
+    validate.exist(email, 'E-mail não informado!');
+    validate.exist(password, 'Senha não informada!');
+    validate.exist(confirmPassword, 'Confirmação de senha não informada!');
+    validate.equal(password, confirmPassword, 'Senhas informadas não são iguais!')
     if (validate.valid) {
       try {
         const createUser = {
@@ -53,6 +54,10 @@ const Logon: React.FC = () => {
         return;
       }
     }
+  }
+
+  function handleCancel() {
+    history.push('/');
   }
 
   return (
@@ -84,7 +89,14 @@ const Logon: React.FC = () => {
             onChange={e => setConfirmPassword(e.target.value)}
             ref={confirmPasswordRef}
           />
-          <FormButton type="submit">Entrar</FormButton>
+          <FormButtons>
+            <FormButton id="save" type="submit" >
+              Criar
+            </FormButton>
+            <FormButton id="cancel" type="button" onClick={handleCancel}>
+              Cancelar
+            </FormButton>
+          </FormButtons>
         </Form>
       </Content>
       <SignIN>

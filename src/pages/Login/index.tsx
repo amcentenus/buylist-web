@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import Validate from '../../services/validation';
 import Api from '../../services/api';
-import { setUserToken } from '../../services/localStorage';
+import { setUser } from '../../services/localStorage';
 
 import {
   Container, Content, Logos, Form, FormInput, FormButton, SignUP
@@ -22,14 +22,14 @@ const Login: React.FC = () => {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const validate = new Validate();
-    validate.existOrError(login, 'Login ou E-mail não informado!');
-    validate.existOrError(password, 'Senha não informada!');
+    validate.exist(login, 'Login ou E-mail não informado!');
+    validate.exist(password, 'Senha não informada!');
     if (validate.valid) {
       try {
         const response = await Api.post('/sessions', {
           UserName: login, Password: password
         });
-        setUserToken(response.data.Token);
+        setUser(response.data);
         history.push('/home');
       } catch (err) {
         loginRef.current?.focus();

@@ -56,19 +56,34 @@ export const FormInput = styled.input`
   }
   
 `;
+
+export const FormButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16px;
+  #save {
+    background: var(--color-button-ok);
+  }
+  #cancel {
+    background: var(--color-button-cancel);
+    margin-left: 8px;
+  }
+`;
+
 export const FormButton = styled.button`
   height: 40px;
-  width: 160px;
+  width: 120px;
   font-size: 18px;
   color: #fff;
   font-weight: bold;
   text-align: center;
-  background: #555E7B;
   border-radius: 16px;
   align-self: center;
   margin-top: 8px;
   transition: opacity 0.5s;
-  
+ 
   &:hover{
     opacity: 0.7;
   }

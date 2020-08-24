@@ -1,5 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+:root {
+  --color-primary: #555E7B;
+  --color-secundary: #005B70;
+  --color-text-default: #E1E1E1;
+  --color-input-background: #C1C1C1;
+  --color-input-font: #000;
+  --color-input-placeholder: #E1E1E1;
+  --color-button-ok: #03A800;
+  --color-button-cancel: #FF3737;
+  --color-button-default: #005B70;
+  --color-button-text: #FFF;
+  --color-icons: #f5f5f5;
+}
+
 * {
   border: 0;
   padding: 0;
@@ -12,7 +26,7 @@
   outline: 0;
 }
 
-body {
+*, input, button {
   font-family: 'Roboto', sans-serif;
 }
 
@@ -24,7 +38,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus {
   /* border: 1px solid green; */
-  -webkit-text-fill-color: #000;
+  -webkit-text-fill-color: var(--color-input-font);
   box-shadow: 0 0 0px 1000px #c1c1c1 inset;
   /* transition: background-color 5000s ease-in-out 0s; */
 }

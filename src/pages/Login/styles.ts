@@ -62,7 +62,7 @@ export const FormButton = styled.button`
   color: #fff;
   font-weight: bold;
   text-align: center;
-  background: #555E7B;
+  background: var(--color-button-ok);
   border-radius: 16px;
   align-self: center;
   margin-top: 8px;

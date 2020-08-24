@@ -1,43 +1,30 @@
-import { toastError } from './Toast';
+import { existOrError, notExistOrError, equalOrError } from './verification';
 
 class Validate {
   public valid: boolean = true;
 
-  private _exists(value: any): boolean {
-    if (!value) return false;
-    if (Array.isArray(value) && value.length === 0) return false;
-    if (typeof value === 'string' && !value.trim()) return false;
-    return true;
-  }
-
-  public existOrError(value: any, msg: string): boolean {
-    try {
-      if (!this._exists(value)) throw msg;
+  public exist(value: any, msg: string): boolean {
+    if (existOrError(value, msg)) {
       return true;
-    } catch (msg) {
-      toastError(msg);
+    } else {
       this.valid = false;
       return false;
     }
   }
 
-  public notExistOrError(value: any, msg: string): boolean {
-    try {
-      if (this._exists(value)) throw msg;
+  public notExist(value: any, msg: string): boolean {
+    if (notExistOrError(value, msg)) {
       return true;
-    } catch (msg) {
-      toastError(msg);
+    } else {
       this.valid = false;
       return false;
     }
   }
 
-  public equalOrError(valueA: any, valueB: any, msg: string): boolean {
-    try {
-      if (valueA !== valueB) throw msg;
+  public equal(valueA: any, valueB: any, msg: string): boolean {
+    if (equalOrError(valueA, valueB, msg)) {
       return true;
-    } catch (msg) {
-      toastError(msg);
+    } else {
       this.valid = false;
       return false;
     }
