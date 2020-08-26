@@ -8,7 +8,7 @@ function toastError(msg: string): void {
   })
 }
 
-function toastMessage(msg: string): void {
+function toastSuccess(msg: string): void {
   toast.success(msg, {
     position: toast.POSITION.TOP_RIGHT,
     autoClose: 5000,
@@ -16,4 +16,4 @@ function toastMessage(msg: string): void {
   })
 }
 
-export { toastError, toastMessage }
+export { toastError, toastSuccess }

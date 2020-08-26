@@ -7,6 +7,8 @@ import Conteudo from '../../components/Content';
 import Profile from '../../components/Profile';
 
 import { Container } from './styles';
+import { getUser } from '../../services/localStorage';
+import UserContext from '../../services/context';
 
 interface LocationState {
   User: string;
@@ -30,17 +32,19 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Container>
-      <div className="header">
-        <Header />
-      </div>
-      <div className="menu">
-        <Menu />
-      </div>
-      <div className="content">
-        {renderComponent()}
-      </div>
-    </Container>
+    <UserContext.Provider value={getUser()} >
+      <Container>
+        <div className="header">
+          <Header />
+        </div>
+        <div className="menu">
+          <Menu />
+        </div>
+        <div className="content">
+          {renderComponent()}
+        </div>
+      </Container>
+    </UserContext.Provider>
   );
 }
 

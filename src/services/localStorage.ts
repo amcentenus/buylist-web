@@ -58,6 +58,7 @@ function getUserIdFromToken(): string {
 }
 
 export {
-  setUser, getUser, setUserToken, getSigned, getUserIdFromToken, getUserId,
+  getSigned, getUserIdFromToken, getUserId, getUser, getUserToken, getUserName,
+  setUser, setUserToken, setUserName,
   removeUser
 }

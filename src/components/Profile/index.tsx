@@ -8,22 +8,29 @@ import {
 
 import Logo from '../../assets/tbl_fundo.svg';
 import api from '../../services/api';
-import { toastError } from '../../services/Toast';
-import { removeUser } from '../../services/localStorage';
-import { existOrError } from '../../services/verification';
+import Validate from '../../services/validation';
+
+import { toastError, toastSuccess } from '../../services/Toast';
+import { removeUser, getUserToken, setUserName } from '../../services/localStorage';
+import { existOrError, equalOrError } from '../../services/verification';
 
 interface ProfileProps {
   userId: string;
 }
 interface IUserData {
-  Name: string;
-  Login: string;
-  Email: string;
+  Name?: string;
+  Login?: string;
+  Email?: string;
+  OldPassword?: string;
+  NewPassword?: string;
+  ConfirmNewPassword?: string;
 }
+
 
 const Profile: React.FC<ProfileProps> = ({ userId }) => {
   const history = useHistory();
   const ID = userId;
+  const config = { headers: { 'Authorization': `Bearer ${getUserToken()}` } };
   const [login, setLogin] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -38,11 +45,12 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
   const [errorInputName, setErrorInputName] = useState<boolean>(false);
   const [errorInputLogin, setErrorInputLogin] = useState<boolean>(false);
   const [errorInputEmail, setErrorInputEmail] = useState<boolean>(false);
-  const [errorInputOldPassword, setErrorInputOldPassword] = useState<boolean>(false);
+  // const [errorInputOldPassword, setErrorInputOldPassword] = useState<boolean>(false);
+  const [errorInputNewPassword, setErrorInputNewPassword] = useState<boolean>(false);
   const [errorInputConfirmPassword, setErrorInputConfirmPassword] = useState<boolean>(false);
 
   useEffect(() => {
-    async function loadUser() {
+    (async () => {
       try {
         if (!ID) { return; }
         const response = await api.get(`/users/${ID}`);
@@ -58,9 +66,7 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
         toastError('Erro ao recuperar dados do usuário!');
         console.log(err);
       }
-    }
-    loadUser();
-
+    })();
   }, [ID]);
 
   useEffect(() => {
@@ -87,24 +93,53 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setErrorInputName(!existOrError(name, 'O campo Nome Completo não foi preenchido!'));
-    setErrorInputLogin(!existOrError(login, 'O campo Login não foi preenchido!'));
-    setErrorInputEmail(!existOrError(email, 'O campo E-mail não foi preenchido!'));
+    const validate = new Validate();
+
+    setErrorInputName(!validate.exist(name, 'O campo Nome Completo não foi preenchido!'));
+    setErrorInputLogin(!validate.exist(login, 'O campo Login não foi preenchido!'));
+    setErrorInputEmail(!validate.exist(email, 'O campo E-mail não foi preenchido!'));
+    if (oldPassword) {
+      setErrorInputNewPassword(
+        !validate.exist(newPassword, 'O campo nova senha não foi preenchido!')
+      );
+      setErrorInputConfirmPassword(
+        !validate.exist(confirmPassword, 'O campo de confirmação de senha não foi preenchido!')
+      );
+      setErrorInputConfirmPassword(
+        !validate.equal(
+          newPassword,
+          confirmPassword,
+          'A nova senha e a confirmação não são iguais!')
+      );
+
+    }
     if (newPassword) {
       setErrorInputConfirmPassword(
-        !existOrError(
+        !validate.exist(
           confirmPassword, 'O campo de confirmação de senha não foi preenchido!'
         )
       )
     }
-
+    if (!validate.valid) { return; }
     try {
-      const response = await api.put('/users', {
+      let data: IUserData = {};
+      if (name !== userData.Name) { data.Name = name };
+      if (login !== userData.Login) { data.Login = login };
+      if (email !== userData.Email) { data.Email = email };
+      if (oldPassword !== '') { data.OldPassword = oldPassword };
+      if (newPassword !== '') { data.NewPassword = newPassword };
+      if (confirmPassword !== '') { data.ConfirmNewPassword = confirmPassword };
 
-      });
+      const response = await api.put('/users', data, config);
+      if (name !== userData.Name) { setUserName(name) };
+      toastSuccess(response.data.message);
+      history.push('/home');
 
+      return;
     } catch (err) {
-
+      toastError('Erro ao alterar dados do Perfil!');
+      console.log(err);
+      return;
     }
   }
 
@@ -141,7 +176,7 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
           <FormInput>
             <FormInputLabel htmlFor="oldPassword">Senha atual:</FormInputLabel>
             <FormInputBox type="password" id="oldPassword"
-              error={errorInputOldPassword}
+              // error={errorInputOldPassword}
               value={oldPassword} onChange={e => setOldPassword(e.target.value)}
               showPassword={true}
             />
@@ -149,6 +184,7 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
           <FormInput>
             <FormInputLabel htmlFor="newPassword">Nova senha:</FormInputLabel>
             <FormInputBox type="password" id="newPassword"
+              error={errorInputNewPassword}
               value={newPassword} onChange={e => setNewPassword(e.target.value)}
               showPassword={true} disabled={passwordEnabled}
             />

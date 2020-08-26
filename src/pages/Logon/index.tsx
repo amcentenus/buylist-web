@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import Validate from '../../services/validation';
 import Api from '../../services/api';
-import { toastMessage } from '../../services/Toast';
+import { toastSuccess } from '../../services/Toast';
 
 import {
   Container, Content, Logos, Form, FormInput,
@@ -46,7 +46,7 @@ const Logon: React.FC = () => {
           ConfirmPassword: confirmPassword
         }
         await Api.post('/users', createUser);
-        toastMessage('Usuário criado com sucesso!');
+        toastSuccess('Usuário criado com sucesso!');
         history.push('/');
       } catch (err) {
         loginRef.current?.focus();
