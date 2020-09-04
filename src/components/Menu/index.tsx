@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { Container } from './styles';
 
 const Menu: React.FC = () => {
   const [activeButton, setActiveButton] = useState('');
+  const history = useHistory();
 
   function handleMenuPress(e: React.MouseEvent<HTMLButtonElement>): void {
     setActiveButton(e.currentTarget.id);
+    history.push(`#${e.currentTarget.id}`);
   }
 
   return (

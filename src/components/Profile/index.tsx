@@ -12,7 +12,7 @@ import Validate from '../../services/validation';
 
 import { toastError, toastSuccess } from '../../services/Toast';
 import { removeUser, getUserToken, setUserName } from '../../services/localStorage';
-import { existOrError, equalOrError } from '../../services/verification';
+import { existOrError } from '../../services/verification';
 
 interface ProfileProps {
   userId: string;
